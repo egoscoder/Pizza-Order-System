@@ -1,19 +1,13 @@
-|------------------------|
-|  Pizza Tabani Seciniz  |
-|------------------------|
-| 1: Klasik              |
-| 2: Margarita           |
-| 3: TurkPizza           |
-| 4: Sade Pizza          |
-|------------------------|
-|     Sos Seciniz        |
-|------------------------|
-| 11: Zeytin             |
-| 12: Mantarlar          |
-| 13: Keci Peyniri       |
-| 14: Et                 |
-| 15: Sogan              |
-| 16: Misir              |
-|------------------------|
-|   Tesekkur ederiz!     |
-|------------------------|
+* Lutfen Bir Pizza Tabani Seciniz:
+1: Klasik       --- 30 TL
+2: Margarita    --- 40 TL
+3: TurkPizza    --- 45 TL
+4: Sade Pizza   --- 50 TL
+* ve Sececeginiz sos:
+11: Zeytin          --- 2 TL
+12: Mantarlar       --- 2 TL
+13: Keci Peyniri    --- 3 TL
+14: Et              --- 4 TL
+15: Sogan           --- 2 TL
+16: Misir           --- 1 TL
+* Tesekkur ederiz!

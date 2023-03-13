@@ -1,18 +1,17 @@
 import csv #Burada csv kitaplığını import ediyoruz
 import datetime #Burada date time kitaplığını import ediyoruz
 
-
 class Pizza: #Buraya Pizza class tanımlıyoruz
     def __init__(self, description='Pizza', cost=0):# init methodu ile alt sınıfların description ve cost olmak üzere 2 parametre alacağını belirtiyoruz.
         self.description = description #Alt sınıflarda eğer bir description girilirse bu değeri alır girilmezse varsayılan olarak pizza değerini alır.
         self.cost = cost #Alt sınıflarda eğer bir cost girilirse bu değeri alır girilmezse varsayılan olarak 0 değerini alır.
-    
+
     def get_description(self): #Bir pizza alt sınıfı oluşturulduğunda get description fonksiyonunu bu alt sınıfta kullanarak alt sınıfın descriptionunu elde edebiliriz.
         return self.description 
 
     def get_cost(self): #Bir pizza alt sınıfı oluşturulduğunda get cost fonksiyonunu bu alt sınıfta kullanarak alt sınıfın costunu elde edebiliriz.
         return self.cost
-
+    
 
 class KlasikPizza(Pizza): #Pizzanın alt sınıflarını oluşturduk Super fonksiyonu ile üst pizza sınıfının init fonksiyonuna erişip
     def __init__(self):
@@ -84,43 +83,67 @@ def csv_yaz(name, id_number, cc_number, pizza, sauce, price, cc_password): # Csv
         # writer değişkeninin içerisindeki writerow fonksiyonuna ulaşarak her seferinde bir satır yazdırmasını sağlıyoruz. fstring kullanarak stringin içerisinde değişken kullanıyoruz böylece değişkenin değerlerini dosyaya yazabiliyoruz.
 
 def main():
+      
+    isOrderFinished=False
+    summarizeOrder=[]
     print('Pizza Sistemine Hosgeldiniz!\n\nMenumuz:\n') #Hoşgeldin mesajı
     print(open('Menu.txt', 'r').read()) #Menu.txt dosyasının okuma modunda açılması
-    pizza_choice = int(input('Lutfen pizzanizi seciniz: ')) #Kullanıcıdan alınan input'u pizza_choice değerine atıyoruz
-    while pizza_choice not in range(1, 5): # Kullanıcının yanlış değer girip girmemesini kontrol ediyoruz
-        pizza_choice = int(input('Gecersiz secim. Lutfen 1-5 arasinda bir sayi girin: '))
+    while(not isOrderFinished): # Musteri birden fazla siparis verebilir olmasi icin döngü
+        pizza_choice = int(input('\nLutfen pizzanizi seciniz: ')) #Kullanıcıdan alınan input'u pizza_choice değerine atıyoruz
+        while pizza_choice not in range(1, 5): # Kullanıcının yanlış değer girip girmemesini kontrol ediyoruz
+            pizza_choice = int(input('Gecersiz secim. Lutfen 1-5 arasinda bir sayi girin: '))
 
-    pizza = None # Pizza değişkeni oluşturuyoruz
+        pizza = None # Pizza değişkeni oluşturuyoruz
 
         
-    if pizza_choice == 1: # Kullanıcının girdiği değere göre alt sınıfları çalıştırıyoruz.
-        pizza = KlasikPizza()
-    elif pizza_choice == 2:
-        pizza = MargaritaPizza()
-    elif pizza_choice == 3:
-        pizza = TurkPizza()
-    elif pizza_choice == 4:
-        pizza = SadePizza()
+        if pizza_choice == 1: # Kullanıcının girdiği değere göre alt sınıfları çalıştırıyoruz.
+            pizza = KlasikPizza()
+        elif pizza_choice == 2:
+            pizza = MargaritaPizza()
+        elif pizza_choice == 3:
+            pizza = TurkPizza()
+        elif pizza_choice == 4:
+            pizza = SadePizza()
     
-    sauce_choice = int(input('Lutfen sosunuzu seciniz: ')) # Kullanıcının sos seçmesini istiyoruz.
-    while sauce_choice not in range(11, 17): # Kullanıcının yanlış değer girip girmediğinin kontrolü
-        sauce_choice = int(input('Gecersiz secim. Lutfen 11-16 arasinda bir sayi girin: '))
-    if sauce_choice == 11:
-        pizza = Zeytin(pizza)
-    elif sauce_choice == 12:
-        pizza = Mantar(pizza)
-    elif sauce_choice == 13:
-        pizza = KeciPeyniri(pizza)
-    elif sauce_choice == 14:
-        pizza = Et(pizza)
-    elif sauce_choice == 15:
-        pizza = Sogan(pizza)
-    elif sauce_choice == 16:
-        pizza = Misir(pizza)
+        sauce_choice = int(input('\nLutfen sosunuzu seciniz: ')) # Kullanıcının sos seçmesini istiyoruz.
+        while sauce_choice not in range(11, 17): # Kullanıcının yanlış değer girip girmediğinin kontrolü
+            sauce_choice = int(input('Gecersiz secim. Lutfen 11-16 arasinda bir sayi girin: '))
+        if sauce_choice == 11:
+            pizza = Zeytin(pizza)
+        elif sauce_choice == 12:
+            pizza = Mantar(pizza)
+        elif sauce_choice == 13:
+            pizza = KeciPeyniri(pizza)
+        elif sauce_choice == 14:
+            pizza = Et(pizza)
+        elif sauce_choice == 15:
+            pizza = Sogan(pizza)
+        elif sauce_choice == 16:
+            pizza = Misir(pizza)
     
-       
-    print('\nSiparisiz Ozetiniz: \n\nPizza seciminiz: {}\nTutar: {} TL '.format(pizza.get_description(), pizza.get_cost())) # Sipariş özeti
+    
+        summarizeOrder.append(pizza)#Siparişlerin bir array'e siparis özeti olarak atanması
+        while(True):#Kullanıcının baska siparis verip vermemek istemesi durumunu kontrol etme
+            orderDone=input('\nBaska bir siparis daha vermek istiyorsaniz Y istemiyorsaniz N yazin.')
+            if(orderDone.capitalize()=="N"):
+                isOrderFinished=True #N ise siparis sonlandırmak için True yapılır
+                break
+            elif(orderDone.capitalize()=="Y"):
+                isOrderFinished=False#Y ise siparis devam ettirmek için False yazılır baştaki while döngüsü devam eder
+                break
+            else:
+                print('\nGecersiz cevap. Lutfen Y ya da N yazin.')
 
+        
+    print('\nSiparis Ozetiniz: ')
+    toplamTutar=0
+    siparisOzeti=""
+    for i in range(len(summarizeOrder)): #array e eklenen değerleri for döngüsüyle dönüp özet ve toplam tutar bulma
+        siparisOzeti=siparisOzeti+summarizeOrder[i].get_description()+" + "
+        toplamTutar+=summarizeOrder[i].get_cost()
+    siparisOzeti=siparisOzeti[:-2]
+    print('\n\nPizza seciminiz: {}\nTutar: {} TL '.format(siparisOzeti, toplamTutar)) # Sipariş özeti
+        
     # Kullancı Bilgilerinin Csv Dosyasına yazacağı yer 
     
     name =(input('\nLutfen isminizi girin: ')) # Kullanıcıdan isim istenmesi
@@ -133,12 +156,15 @@ def main():
             cc_number = int(input('Lutfen kart numaranizi girin: '))
             cc_password = int(input('Lutfen kredi karti sifrenizi girin: '))
             break
+        
         except ValueError:
             print("Geçersiz sadece sayi giriniz")
 
-    csv_yaz(name, id_number, cc_number, pizza_choice, sauce_choice, pizza.get_cost(), cc_password) # Yazdığımız csv_yaz fonksiyonunun çağrılarak verilen bilgilerin database'e işlenmesi
     now = datetime.datetime.now() # Zamanın bir değişkene atanması
     formatted_time = now.strftime('%Y-%m-%d %H:%M') # Zamanın strftime fonksiyonuyla formatlanması, %Y yıl %m ay %d gün %H saat %M dakikayı temsil eder
+    
+    csv_yaz(name, id_number, cc_number, siparisOzeti, toplamTutar, formatted_time, cc_password) # Yazdığımız csv_yaz fonksiyonunun çağrılarak verilen bilgilerin database'e işlenmesi
+    
     print("Tebrikler siparisiniz basari ile olusturuldu.", formatted_time) # Sipariş mesajı ve tarihin yazdırılması.
 
 main() # Programın çalışması
